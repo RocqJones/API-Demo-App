@@ -4,13 +4,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.intoverflown.apidemo.R
+import com.intoverflown.apidemo.databinding.HomeRvItemViewBinding
 import com.intoverflown.apidemo.home.data.PostModel
-import kotlinx.android.synthetic.main.home_rv_item_view.view.*
 
 class HomeAdapter(var listener:HomeListener) : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
 
     private var data : ArrayList<PostModel>?=null
+
+    private lateinit var binding: HomeRvItemViewBinding
 
     fun setData(list: ArrayList<PostModel>){
         data = list
@@ -18,7 +19,10 @@ class HomeAdapter(var listener:HomeListener) : RecyclerView.Adapter<HomeAdapter.
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeViewHolder {
-        return HomeViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.home_rv_item_view, parent, false))
+//        return HomeViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.home_rv_item_view, parent, false))
+        binding = HomeRvItemViewBinding.inflate(LayoutInflater.from(parent.context))
+        val view = binding.root
+        return HomeViewHolder(view)
     }
 
     override fun getItemCount(): Int {
@@ -28,7 +32,9 @@ class HomeAdapter(var listener:HomeListener) : RecyclerView.Adapter<HomeAdapter.
     override fun onBindViewHolder(holder: HomeViewHolder, position: Int) {
         val item = data?.get(position)
         holder.bindView(item)
-        holder.itemView.img_delete.setOnClickListener {
+
+//        holder.itemView.img_delete
+        binding.imgDelete.setOnClickListener {
             item?.let { it1 ->
                 listener.onItemDeleted(it1, position)
             }
@@ -36,9 +42,14 @@ class HomeAdapter(var listener:HomeListener) : RecyclerView.Adapter<HomeAdapter.
     }
 
     class HomeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+
+        var itemVw = HomeRvItemViewBinding.bind(itemView)
+
         fun bindView(item: PostModel?) {
-            itemView.tv_home_item_title.text = item?.title
-            itemView.tv_home_item_body.text = item?.body
+            // itemView.tv_home_item_title.text = item?.title
+            // itemView.tv_home_item_body.text = item?.body
+            itemVw.tvHomeItemTitle.text = item?.title
+            itemVw.tvHomeItemBody.text = item?.body
         }
 
     }

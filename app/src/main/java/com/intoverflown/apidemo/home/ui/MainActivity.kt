@@ -9,19 +9,24 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.intoverflown.apidemo.R
+import com.intoverflown.apidemo.databinding.ActivityMainBinding
+import com.intoverflown.apidemo.databinding.CreatePostDialogBinding
 import com.intoverflown.apidemo.home.data.PostModel
 import com.intoverflown.apidemo.home.viewmodel.HomeViewModel
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.create_post_dialog.view.*
 
 class MainActivity : AppCompatActivity(), HomeAdapter.HomeListener {
 
     private lateinit var vm: HomeViewModel
     private lateinit var adapter: HomeAdapter
+    private lateinit var bindingMain: ActivityMainBinding
+    private lateinit var bindingCreatePost: CreatePostDialogBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+//        setContentView(R.layout.activity_main)
+        bindingMain = ActivityMainBinding.inflate(layoutInflater)
+        val view  = bindingMain.root
+        setContentView(view)
 
         vm = ViewModelProvider(this)[HomeViewModel::class.java]
 
@@ -31,19 +36,19 @@ class MainActivity : AppCompatActivity(), HomeAdapter.HomeListener {
 
         vm.postModelListLiveData?.observe(this, Observer {
             if (it!=null){
-                rv_home.visibility = View.VISIBLE
+                bindingMain.rvHome.visibility = View.VISIBLE
                 adapter.setData(it as ArrayList<PostModel>)
             }else{
                 showToast("Something went wrong")
             }
-            progress_home.visibility = View.GONE
+            bindingMain.progressHome.visibility = View.GONE
         })
     }
 
     private fun initAdapter() {
         adapter = HomeAdapter(this)
-        rv_home.layoutManager = LinearLayoutManager(this)
-        rv_home.adapter = adapter
+        bindingMain.rvHome.layoutManager = LinearLayoutManager(this)
+        bindingMain.rvHome.adapter = adapter
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -60,15 +65,17 @@ class MainActivity : AppCompatActivity(), HomeAdapter.HomeListener {
 
     private fun showCreatePOstDialog() {
         val dialog = Dialog(this)
-        val view = LayoutInflater.from(this).inflate(R.layout.create_post_dialog, null)
+//        val view = LayoutInflater.from(this).inflate(R.layout.create_post_dialog, null)
+        bindingCreatePost = CreatePostDialogBinding.inflate(layoutInflater)
+        val view  = bindingCreatePost.root
         dialog.setContentView(view)
 
         var title = ""
         var body = ""
 
-        view.btn_submit.setOnClickListener {
-            title = view.et_title.text.toString().trim()
-            body = view.et_body.text.toString().trim()
+        bindingCreatePost.btnSubmit.setOnClickListener {
+            title = bindingCreatePost.etTitle.text.toString().trim()
+            body = bindingCreatePost.etBody.text.toString().trim()
 
             if (title.isNotEmpty() && body.isNotEmpty()){
                 val postModel = PostModel()
@@ -81,7 +88,7 @@ class MainActivity : AppCompatActivity(), HomeAdapter.HomeListener {
                 vm.createPostLiveData?.observe(this, Observer {
                     if (it!=null){
                         adapter.addData(postModel)
-                        rv_home.smoothScrollToPosition(0)
+                        bindingMain.rvHome.smoothScrollToPosition(0)
                     }else{
                         showToast("Cannot create post at the moment")
                     }
