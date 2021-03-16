@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">APIdemo</string>
+    <string name="create_post">Create Post</string>
+    <string name="enter_title">Enter title</string>
+    <string name="enter_body">Enter Body</string>
+    <string name="cancel_btn">cancel btn</string>
 </resources>
