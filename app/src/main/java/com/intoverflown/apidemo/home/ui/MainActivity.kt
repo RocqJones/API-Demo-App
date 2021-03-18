@@ -1,10 +1,13 @@
 package com.intoverflown.apidemo.home.ui
 
 import android.app.Dialog
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.*
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import android.view.WindowManager
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -79,9 +82,12 @@ class MainActivity : AppCompatActivity(), HomeAdapter.HomeListener {
 
             if (title.isNotEmpty() && body.isNotEmpty()){
                 val postModel = PostModel()
-                postModel.userId = 1
-                postModel.title = title
-                postModel.body = body
+//                postModel.userId = 1
+                postModel.id = 1
+//                postModel.title = title
+//                postModel.body = body
+                postModel.course_instructor = title
+                postModel.course_objective = body
 
                 vm.createPost(postModel)
 
