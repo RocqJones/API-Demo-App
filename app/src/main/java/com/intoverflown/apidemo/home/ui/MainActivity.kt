@@ -82,12 +82,13 @@ class MainActivity : AppCompatActivity(), HomeAdapter.HomeListener {
 
             if (title.isNotEmpty() && body.isNotEmpty()){
                 val postModel = PostModel()
-//                postModel.userId = 1
-                postModel.id = 1
-//                postModel.title = title
-//                postModel.body = body
-                postModel.course_instructor = title
-                postModel.course_objective = body
+                postModel.userId = 1
+                postModel.title = title
+                postModel.body = body
+
+//                postModel.id = 1
+//                postModel.course_instructor = title
+//                postModel.course_objective = body
 
                 vm.createPost(postModel)
 
